@@ -1,0 +1,5 @@
+CONFIG_PATH = r"C:\LDPlayer\LDPlayer9\vms\config"
+PACKAGE_NAME = "com.smilegate.chaoszero.stove.google"
+SCREENSHOT_DIR = r"D:\Chaos\screenshots"
+MAIN_PATH = "D:/Chaos/"
+APK_DIR = r"C:/Users/Killua/Desktop/ChaosAPK"
