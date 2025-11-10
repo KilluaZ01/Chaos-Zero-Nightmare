@@ -12,10 +12,29 @@ def get_game_steps():
         list: List of (description, function, coords, sleep_duration) tuples
     """
     steps = [
-        ('Agreed!', tap_macro, (496, 601), 1),
-        ('Terms and Condition! - Done', tap_macro, (820, 600), 4),
-        ('Guest', tap_macro, (493, 531), 20),
-
+        ('Login', tap_macro, (640, 560), 5),
+        ('Guest Account', tap_macro, (840, 285), 6),
+        ('Confirm', tap_macro, (895, 520), 8),
+        ('Confirm Guest', tap_macro, (630, 615), 8),
+        ('Confirm Server', tap_macro, (625, 495), 5),
+        ('Choose Voice', tap_macro, (625, 360), 3),
+        ('Confirm Voice', tap_macro, (625, 495), 10),
+        ('Confirm Download', tap_macro, (860, 500), 60),
+        ('Settings', tap_macro, (1205, 560), 10),
+        ('Choose Detail 1', tap_macro, (1020, 275), 7),
+        ('Low Detail 1', tap_macro, (1030, 380), 5),
+        ('Choose Detail 2', tap_macro, (1020, 330), 3),
+        ('Low Detail 2', tap_macro, (1030, 430), 5),    
+        ('Choose Detail 3', tap_macro, (1020, 385), 3),
+        ('Low Detail 3', tap_macro, (1030, 485), 5),
+        ('Choose Detail 4', tap_macro, (1020, 440), 3),
+        ('Low Detail 4', tap_macro, (1030, 540), 5),
+        ('Choose Detail 5', tap_macro, (1020, 495), 3),
+        ('Low Detail 5', tap_macro, (1030, 595), 5),
+        ('Apply', tap_macro, (1120, 645), 5),
+        ('Sound', tap_macro, (60, 235), 6),
+        ('Mute', tap_macro, (1200, 165), 3),
+        ('Close Settings', tap_macro, (1200, 60), 10)
     ]
     
     return steps

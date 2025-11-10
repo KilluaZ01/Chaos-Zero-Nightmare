@@ -9,7 +9,8 @@ from .instance_manager import (
 from .file_manager import (
     get_persistent_path,
     save_account_metadata,
-    backup_account_data
+    backup_account_data,
+    push_assets
 )
     
 __all__ = [
@@ -19,5 +20,6 @@ __all__ = [
     'install_apk_threaded',
     'get_persistent_path',
     'save_account_metadata',
-    'backup_account_data'
+    'backup_account_data',
+    'push_assets'
 ]

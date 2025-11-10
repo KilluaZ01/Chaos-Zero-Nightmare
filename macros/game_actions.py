@@ -8,6 +8,10 @@ def launch_instance(instance_name):
     """Launch the LDPlayer instance"""
     os.system(f'ldconsole.exe launch --name "{instance_name}"')
 
+def clone_instance(source_instance, target_instance):
+    """Clone an LDPlayer instance"""
+    os.system(f'ldconsole.exe copy --name "{target_instance}" --from "{source_instance}"')
+
 def close_instance(instance_name):
     """Close the LDPlayer instance"""
     os.system(f'ldconsole.exe quit --name "{instance_name}"')
