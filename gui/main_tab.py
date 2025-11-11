@@ -83,8 +83,8 @@ class MainTab:
         """Create modern input fields"""
         fields = [
             ("Instance Name", "Chaos_Base", "😁"),
-            ("Total Accounts", "10", "📊"),
-            ("Batch Size", "2", "📦")
+            ("Total Accounts", "1", "📊"),
+            ("Batch Size", "1", "📦")
         ]
         
         for i, (label_text, default, icon) in enumerate(fields):

@@ -14,15 +14,16 @@ def tap_macro(instance_name, x, y):
     os.system(tap_command)
 
 
-def swipe_macro(instance_name, x1, y1, x2, y2):
+def swipe_macro(instance_name, x1, y1, x2, y2, duration = 1000):
     """Perform a swipe action on the specified instance
     
     Args:
         instance_name: Name of the LDPlayer instance
         x1, y1: Starting coordinates
         x2, y2: Ending coordinates
+        duration: Duration of the swipe in milliseconds
     """
-    swipe_command = f'ldconsole.exe adb --name {instance_name} --command "shell input touchscreen swipe {x1} {y1} {x2} {y2} 1000"'
+    swipe_command = f'ldconsole.exe adb --name {instance_name} --command "shell input touchscreen swipe {x1} {y1} {x2} {y2} {duration}"'
     os.system(swipe_command)
 
 def input_macro(instance_name, name):
