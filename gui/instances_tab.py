@@ -5,11 +5,13 @@ from ttkbootstrap.constants import *
 from tkinter import messagebox
 import json
 import os
-# from parallel_runner import get_persistent_path
+
+from utils.file_manager import get_persistent_path
+
 # from account_extract import extract_account
 
 
-BATCHES_FILE = "Path"# get_persistent_path('batches.json') 
+BATCHES_FILE = get_persistent_path('batches.json') 
 
 class InstancesTab:
     """Modern instance status manager"""
@@ -49,12 +51,13 @@ class InstancesTab:
             card = ttk.Frame(stats_frame, bootstyle=style)
             card.pack(side=LEFT, fill=BOTH, expand=YES, padx=5)
             
-            ttk.Label(
+            value_label = ttk.Label(
                 card,
                 text=value,
                 font=("Segoe UI", 24, "bold"),
                 bootstyle=style
-            ).pack(pady=(10, 0))
+            )
+            value_label.pack(pady=(10, 0))
             
             ttk.Label(
                 card,
@@ -63,7 +66,7 @@ class InstancesTab:
                 bootstyle=f"{style}"
             ).pack(pady=(0, 10))
             
-            self.stats_labels[label] = card
+            self.stats_labels[label] = value_label
         
         # Treeview Card
         tree_card = ttk.Labelframe(
@@ -151,6 +154,11 @@ class InstancesTab:
             total = len(accounts)
             active = sum(1 for acc in accounts if acc.get("status") == "Active")
             inactive = total - active
+            
+            # Update stat labels
+            self.stats_labels["Total Accounts"].config(text=str(total))
+            self.stats_labels["Active Today"].config(text=str(active))
+            self.stats_labels["Inactive"].config(text=str(inactive))
             
             # Insert data with tags for coloring
             for acc in accounts:
