@@ -36,7 +36,7 @@ def validate_accounts(guest_data, log_func):
     Returns:
         tuple: (valid_instances, valid_guest_names)
     """
-    template_path = f"{MAIN_PATH}templates/chapter_matcher.png"
+    template_path = f"{SCREENSHOT_DIR}/validate_end.png"
     valid_instances = []
     valid_guest_names = []
 
@@ -77,8 +77,6 @@ def validate_accounts(guest_data, log_func):
             close_instance(instance_name)
             time.sleep(10)
             delete_instance(instance_name)
-
-
 
     # Cleanup valid instances
     for instance_name in valid_instances:

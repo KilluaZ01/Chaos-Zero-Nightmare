@@ -3,6 +3,7 @@ import os
 import subprocess
 import cv2
 from random import randint
+import numpy as np
 
 def take_screenshot(instance_name, filename=None):
     if filename is None:
@@ -77,3 +78,32 @@ def find_coordinates(instance_name, template_path, threshold=0.8):
     else:
         return None
     
+def find_all_coordinates(instance_name, template_path, threshold=0.8):
+    screenshot_path = take_screenshot(instance_name)
+    img = cv2.imread(screenshot_path)
+    template = cv2.imread(template_path)
+
+    if img is None:
+        print(f"❌ Failed to read screenshot: {screenshot_path}")
+        return []
+    if template is None:
+        print(f"❌ Failed to read template: {template_path}")
+        return []
+
+    result = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+    
+    os.remove(screenshot_path)  # Clean up screenshot file
+
+    # Find all positions above threshold
+    y_coords, x_coords = np.where(result >= threshold)
+
+    coords = []
+    w = template.shape[1]
+    h = template.shape[0]
+
+    for (x, y) in zip(x_coords, y_coords):
+        center_x = x + w // 2
+        center_y = y + h // 2
+        coords.append((center_x, center_y))
+
+    return coords

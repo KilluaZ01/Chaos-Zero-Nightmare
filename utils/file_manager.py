@@ -5,9 +5,7 @@ import json
 import subprocess
 from datetime import datetime
 
-from utils.paths import ASSETS_DIR
-
-MAIN_PATH = "D:/Silver_Blood_Bot/"
+from utils.paths import ASSETS_DIR, MAIN_PATH
 
 def get_persistent_path(filename, subdir=None):
     """Get persistent file path in AppData
@@ -116,7 +114,7 @@ def backup_account_data(instance_name, guest_name, log_func):
     make_tar_cmd = (
         f'ldconsole.exe adb --name "{instance_name}" '
         f'--command "shell su -c \'cd /data/data && '
-        f'tar -czf /sdcard/{backup_filename} com.skystone.silverblood.us\'"'
+        f'tar -czf /sdcard/{backup_filename} com.com.smilegate.chaoszero.stove.google\'"'
     )
     
     pull_tar_cmd = (

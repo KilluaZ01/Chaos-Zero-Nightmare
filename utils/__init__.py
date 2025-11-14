@@ -12,6 +12,23 @@ from .file_manager import (
     backup_account_data,
     push_assets
 )
+
+from .paths import (
+    CONFIG_PATH,
+    PACKAGE_NAME,
+    SCREENSHOT_DIR,
+    TEMPLATE_DIR,
+    MAIN_PATH,
+    APK_DIR,
+    ASSETS_DIR
+)
+
+from .screenshot_utils import (
+    take_screenshot,
+    check_template,
+    find_coordinates,
+    find_all_coordinates
+)
     
 __all__ = [
     'adb_debugger',
@@ -21,5 +38,16 @@ __all__ = [
     'get_persistent_path',
     'save_account_metadata',
     'backup_account_data',
-    'push_assets'
+    'push_assets',
+    'CONFIG_PATH',
+    'PACKAGE_NAME',
+    'SCREENSHOT_DIR',
+    'TEMPLATE_DIR',
+    'MAIN_PATH',
+    'APK_DIR',
+    'ASSETS_DIR',
+    'take_screenshot',
+    'check_template',
+    'find_coordinates',
+    'find_all_coordinates'
 ]

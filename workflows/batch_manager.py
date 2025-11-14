@@ -11,7 +11,7 @@ from utils.paths import APK_DIR, PACKAGE_NAME
 from utils.file_manager import push_assets
 
 from .game_progression import get_game_steps, execute_macro_steps
-
+from .account_setup import validate_accounts
 
 def prepare_batch(batch_num, instances_per_batch, base_instance, log_func):
     """Prepare a batch of instances
@@ -33,8 +33,8 @@ def prepare_batch(batch_num, instances_per_batch, base_instance, log_func):
         new_name = f"{base_instance}-{(batch_num - 1) * instances_per_batch + i + 1}-{unique_num}"
         
         # Create instance
-        log_func(f"📦 Creating new instance: {new_name}")
-        os.system(f'ldconsole add --name {new_name} --resolution 1280,720,240')
+        # log_func(f"📦 Creating new instance: {new_name}")
+        # os.system(f'ldconsole add --name {new_name} --resolution 1280,720,240')
 
         # Enable ADB debug
         # log_func(f"🔧 Enabling ADB Debug for {new_name}")
@@ -48,7 +48,7 @@ def prepare_batch(batch_num, instances_per_batch, base_instance, log_func):
         launch_instance(new_name)
         
         instance_names.append(new_name)
-
+    
     return instance_names
 
 def run_all_batches(base_instance, total_accounts, instances_per_batch, log_func, pause_event):
@@ -132,8 +132,7 @@ def run_batch(batch_num, instances_per_batch, log_func, base_instance, pause_eve
     steps = get_game_steps()
     execute_macro_steps(guest_data, steps, log_func, pause_event)
 
-    # Validate and save accounts
-    # from .account_setup import validate_accounts
-    # validate_accounts(guest_data, log_func)
+    # Validate accounts
+    validate_accounts(guest_data, log_func)
 
     log_func(f"✅ Batch {batch_num} completed")
