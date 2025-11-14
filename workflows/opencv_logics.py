@@ -131,16 +131,19 @@ def claim_rewards(instance_name, *args):
     template_path_event = f"{TEMPLATE_DIR}/event_icon.png"
 
     coords = find_all_coordinates(instance_name, template_path_event, threshold=0.8)
+    print(coords)
     for coord in coords:
         x, y = coord
         tap_macro(instance_name, x, y)
         time.sleep(2)
 
-        if check_template(instance_name, template_path_claim, threshold=0.8):
-            tap_macro(instance_name, 640, 480)
+        claim_coords = find_coordinates(instance_name, template_path_claim, threshold=0.8)
+
+        if claim_coords:
+            tap_macro(instance_name, claim_coords[0], claim_coords[1])
             time.sleep(4)
             tap_macro(instance_name, 660, 1)
-            time.sleep(4)
+            time.sleep(2)
         else:
             pass
 

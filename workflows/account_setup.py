@@ -5,14 +5,13 @@ from datetime import datetime
 
 from utils.file_manager import save_account_metadata, backup_account_data
 from utils.screenshot_utils import check_template
+from utils.paths import TEMPLATE_DIR, SCREENSHOT_DIR
 
 from macros.game_actions import close_instance, delete_instance
 from macros.basic_actions import input_macro
+
+
 import time
-
-MAIN_PATH = "D:/Silver_Blood_Bot/"
-SCREENSHOT_DIR = f"{MAIN_PATH}screenshots"
-
 
 def setup_guest_accounts(guest_data, log_func):
     """Input guest names for all accounts
@@ -36,7 +35,7 @@ def validate_accounts(guest_data, log_func):
     Returns:
         tuple: (valid_instances, valid_guest_names)
     """
-    template_path = f"{SCREENSHOT_DIR}/validate_end.png"
+    template_path = f"{TEMPLATE_DIR}/validate_end.png"
     valid_instances = []
     valid_guest_names = []
 

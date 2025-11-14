@@ -14,12 +14,12 @@ def clone_instance(source_instance, target_instance):
 
 def close_instance(instance_name):
     """Close the LDPlayer instance"""
-    os.system(f'ldconsole.exe quit --name "{instance_name}"')
+    os.system(f'ldconsole.exe quit --name {instance_name}')
 
 def delete_instance(instance_name):
     """Delete the LDPlayer instance"""
-    os.system(f'ldconsole.exe delete --name "{instance_name}" --force')
-
+    os.system(f'ldconsole.exe remove --name {instance_name}')
+    
 def close_game(instance_name, *args):
     """Force close the game application
     
