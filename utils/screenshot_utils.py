@@ -5,12 +5,12 @@ import cv2
 from random import randint
 import numpy as np
 
-def take_screenshot(instance_name, filename=None):
+def take_screenshot(instance_name, DIR=SCREENSHOT_DIR, filename=None):
     if filename is None:
         filename = f"{instance_name}_{randint(1000, 9999)}.png"
 
     remote_path = "/sdcard/result.png"
-    local_path = os.path.join(SCREENSHOT_DIR, filename)
+    local_path = os.path.join(DIR, filename)
 
     # Step 1: Take screenshot inside emulator
     screencap_cmd = [
@@ -36,8 +36,12 @@ def take_screenshot(instance_name, filename=None):
 
     return local_path
 
-def check_template(instance_name, template_path, threshold=0.8):
-    screenshot_path = take_screenshot(instance_name)
+def check_template(instance_name, template_path, DIR=None, threshold=0.8):
+    if DIR is None:
+        DIR = SCREENSHOT_DIR
+    
+    screenshot_path = take_screenshot(instance_name, DIR=DIR)
+
     if not screenshot_path:
         return False
 
@@ -107,3 +111,41 @@ def find_all_coordinates(instance_name, template_path, threshold=0.8):
         coords.append((center_x, center_y))
 
     return coords
+
+def match_in_roi(instance_name, template_path, roi):
+    """
+    screenshot_path: full screenshot file
+    template_path: the number/icon you want to find
+    roi: (x1, y1, x2, y2) bounding box where we allow matching
+    """
+    x1, y1, x2, y2 = roi
+
+    screenshot_path = take_screenshot(instance_name)
+
+    screenshot = cv2.imread(screenshot_path)
+    template = cv2.imread(template_path, cv2.IMREAD_GRAYSCALE)
+
+    if screenshot is None or template is None:
+        return None
+
+    # Crop the image to your region
+    cropped = screenshot[y1:y2, x1:x2]
+    cropped_gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
+
+    # Template matching only inside the ROI
+    result = cv2.matchTemplate(cropped_gray, template, cv2.TM_CCOEFF_NORMED)
+
+    # Get match
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+
+    # Confidence check
+    if max_val > 0.8:  
+        return True
+
+    # Found inside ROI → convert to global coordinates
+    # h, w = template.shape
+    # global_x = max_loc[0] + x1 + w // 2
+    # global_y = max_loc[1] + y1 + h // 2
+
+    # return (global_x, global_y)
+

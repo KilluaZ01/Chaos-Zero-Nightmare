@@ -5,7 +5,7 @@ from datetime import datetime
 
 from utils.file_manager import save_account_metadata, backup_account_data
 from utils.screenshot_utils import check_template
-from utils.paths import TEMPLATE_DIR, SCREENSHOT_DIR
+from utils.paths import SCREENSHOT_DIR_FINAL, TEMPLATE_DIR, SCREENSHOT_DIR
 
 from macros.game_actions import close_instance, delete_instance
 from macros.basic_actions import input_macro
@@ -36,13 +36,14 @@ def validate_accounts(guest_data, log_func):
         tuple: (valid_instances, valid_guest_names)
     """
     template_path = f"{TEMPLATE_DIR}/validate_end.png"
+    final_dir = SCREENSHOT_DIR_FINAL
     valid_instances = []
     valid_guest_names = []
 
     for instance_name, guest_name in guest_data:
         log_func(f"[{instance_name}] Taking screenshot for {guest_name}")
 
-        if check_template(instance_name, template_path, threshold=0.80):
+        if check_template(instance_name, template_path, final_dir, threshold=0.80):
             log_func(f"[{instance_name}] ✅ Successfully reached login reward screen.")
 
             # Backup account data
@@ -69,9 +70,15 @@ def validate_accounts(guest_data, log_func):
                 if day_file.startswith(instance_name):
                     try:
                         os.remove(os.path.join(SCREENSHOT_DIR, day_file))
-                        log_func(f"[{instance_name}] 🗑️ Deleted screenshot {day_file}")
                     except Exception as e:
-                        log_func(f"[{instance_name}] ⚠️ Could not delete {day_file}: {e}")
+                        pass
+            
+            for day_file in os.listdir(SCREENSHOT_DIR_FINAL):
+                if day_file.startswith(instance_name):
+                    try:
+                        os.remove(os.path.join(SCREENSHOT_DIR_FINAL, day_file))
+                    except Exception as e:
+                        pass
 
             close_instance(instance_name)
             time.sleep(10)

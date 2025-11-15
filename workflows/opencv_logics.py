@@ -3,7 +3,7 @@ import time
 
 from macros.basic_actions import swipe_macro, tap_macro
 
-from utils.screenshot_utils import check_template, find_coordinates, find_all_coordinates
+from utils.screenshot_utils import check_template, find_coordinates, find_all_coordinates, match_in_roi
 from utils.paths import TEMPLATE_DIR
 
 def watch_again(instance_name, *args):
@@ -150,7 +150,7 @@ def claim_rewards(instance_name, *args):
 def summoning_rare(instance_name, *args):
     template_path = f"{TEMPLATE_DIR}/reward_confirm_button.png"
 
-    for i in range(10):
+    for i in range(8):
         if check_template(instance_name, template_path, threshold=0.8):
             break
 
@@ -163,7 +163,7 @@ def summoning_rare(instance_name, *args):
 def summoning_1x(instance_name, *args):
     template_path = f"{TEMPLATE_DIR}/summon_1x_checker.png"
 
-    for i in range(10):
+    for i in range(8):
         if check_template(instance_name, template_path, threshold=0.8):
             break
 
@@ -175,14 +175,37 @@ def summoning_1x(instance_name, *args):
 
 def summoning_till_empty(instance_name, *args):
     template_path_empty = f"{TEMPLATE_DIR}/summon_empty.png"
+    roi = (1050, 0, 1250, 100)
     
     for i in range(10):
-        if check_template(instance_name, template_path_empty, threshold=0.8):
+        if match_in_roi(instance_name, template_path_empty, roi):
             print("No more summons available.")
             break
         else:
-            tap_macro(instance_name, 844, 658)
+            tap_macro(instance_name, 844, 658) # Summon 1x Button
             time.sleep(2)
             summoning_1x(instance_name)
-            tap_macro(instance_name, 1141, 663)
 
+def summoning_till_10x(instance_name, *args):
+    template_confirm_button = f"{TEMPLATE_DIR}/orange_confirm_button.png"
+    
+    for i in range(4):
+        if check_template(instance_name, template_confirm_button, threshold=0.8):
+            print("10x summon completed.")
+            break
+        else:
+            summoning_rare(instance_name)
+            tap_macro(instance_name, 1141, 663)
+            time.sleep(4)
+            tap_macro(instance_name, 1141, 663)
+            time.sleep(4)
+
+def summon_might(instance_name, *args):
+    template_path = f"{TEMPLATE_DIR}/summon_might.png"
+
+    if check_template(instance_name, template_path, threshold=0.8):
+        tap_macro(instance_name, 500, 405)      # Do not
+        time.sleep(2)
+        tap_macro(instance_name, 906, 485)      # Confirm
+    else:
+        pass

@@ -85,7 +85,8 @@ def run_batch(batch_num, instances_per_batch, log_func, base_instance, pause_eve
     # Prepare instances
     instance_names = prepare_batch(batch_num, instances_per_batch, base_instance, log_func)
     log_func(f"🛠️ Prepared batch {batch_num} with {len(instance_names)} instances")
-    time.sleep(70)
+    # time.sleep(70)
+    time.sleep(150)
 
     # Generate guest data
     guest_data = []
