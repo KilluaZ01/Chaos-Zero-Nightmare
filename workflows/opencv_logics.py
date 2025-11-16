@@ -3,8 +3,8 @@ import time
 
 from macros.basic_actions import swipe_macro, tap_macro
 
-from utils.screenshot_utils import check_template, find_coordinates, find_all_coordinates, match_in_roi
-from utils.paths import TEMPLATE_DIR
+from utils.screenshot_utils import check_template, find_coordinates, find_all_coordinates, match_in_roi, take_screenshot
+from utils.paths import SCREENSHOT_DIR_FINAL, TEMPLATE_DIR
 
 def watch_again(instance_name, *args):
     template_path = f"{TEMPLATE_DIR}/watch_again_button.png"
@@ -19,15 +19,35 @@ def watch_again(instance_name, *args):
 
 def find_research(instance_name, *args):
     template_path = f"{TEMPLATE_DIR}/research_card.png"
+    template_path_horse = f"{TEMPLATE_DIR}/horse.png"
+    template_path_judge = f"{TEMPLATE_DIR}/judge.png"
 
     coords = find_coordinates(instance_name, template_path, threshold=0.8)
     if coords:
         x, y = coords
         tap_macro(instance_name, x, y)
-        return True
+        time.sleep(2)
+        tap_macro(instance_name, 1141, 663),
+        time.sleep(4),
+        tap_macro(instance_name, 1141, 663),
+        time.sleep(4),
+        tap_macro(instance_name, 1141, 663),     
+        time.sleep(4),
+        return True   
     else:
-        tap_macro(instance_name, 322, 366)
-        return False
+        sub_coords = find_coordinates(instance_name, template_path_horse, threshold=0.8)
+        if sub_coords:
+            x, y = sub_coords
+            tap_macro(instance_name, x, y)
+            return True
+        else:
+            sub_coords_2 = find_coordinates(instance_name, template_path_judge, threshold=0.7)
+            if sub_coords_2:
+                x, y = sub_coords_2
+                tap_macro(instance_name, x, y)
+                return True
+            else:
+                tap_macro(instance_name, 322, 366)
     
 def check_start(instance_name, *args):
     template_path = f"{TEMPLATE_DIR}/start_button.png"
@@ -209,3 +229,17 @@ def summon_might(instance_name, *args):
         tap_macro(instance_name, 906, 485)      # Confirm
     else:
         pass
+
+def login_checker(instance_name, *args):
+    template_path = f"{TEMPLATE_DIR}/login_checker.png"
+
+    for i in range(6):
+        if check_template(instance_name, template_path, threshold=0.8):
+            pass
+        else:
+            time.sleep(10)
+
+def final_screenshot(instance_name, *args):
+    DIR = SCREENSHOT_DIR_FINAL
+    FILENAME = f"{instance_name}_DAY1.png"
+    take_screenshot(instance_name, DIR, FILENAME)

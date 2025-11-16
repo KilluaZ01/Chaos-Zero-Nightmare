@@ -17,6 +17,7 @@ def get_game_steps():
         list: List of (description, function, coords, sleep_duration) tuples
     """
     steps = [
+        ('Login Checker', login_checker, None, 3),
         ('Login', tap_macro, (640, 560), 5),
         ('Guest Account', tap_macro, (840, 285), 6),
         ('Confirm', tap_macro, (895, 520), 15),
@@ -37,6 +38,8 @@ def get_game_steps():
         ('Low Detail 4', tap_macro, (1030, 540), 1),
         ('Choose Detail 5', tap_macro, (1020, 495), 2),
         ('Low Detail 5', tap_macro, (1030, 595), 3),
+        ('FPS', tap_macro, (1030, 540), 3),
+        ('Low Detail 6', tap_macro, (1030, 590), 3),
         ('Apply', tap_macro, (1120, 645), 5),
         ('Sound', tap_macro, (60, 235), 6),
         ('Mute', tap_macro, (1200, 165), 3),
@@ -49,7 +52,6 @@ def get_game_steps():
         ('3x', swipe_macro, (1232, 233, 1232, 333, 16000), 17),
         ('3x', swipe_macro, (1232, 233, 1232, 333, 7000), 10),
         ('3x', swipe_macro, (1232, 233, 1232, 333, 3500), 6),
-
         #Battle Started First
         ('Global', tap_macro, (1, 1), 4),
         ('Global', tap_macro, (1, 1), 4),
@@ -523,7 +525,9 @@ def get_game_steps():
         ('Char Details', tap_macro, (771, 673), 7),
         ('Global', tap_macro, (660, 1), 2),
         ('Global', tap_macro, (660, 1), 2),
-        ('Space', tap_macro, (1141, 663), 8),   
+        ('Space', tap_macro, (1141, 663), 8), 
+        ('Global Register', tap_macro, (1255, 390), 3),
+        ('Global Register', tap_macro, (1255, 390), 3),
         ('Auto Register', tap_macro, (1105, 604), 6),
         ('Space', tap_macro, (1141, 663), 6),
         ('Space', tap_macro, (1141, 663), 6),
@@ -591,19 +595,16 @@ def get_game_steps():
         ('Global', tap_macro, (660, 1), 3),
         ('Return', tap_macro, (51, 32), 6),
         ('Return', tap_macro, (51, 32), 6),
-        ('Space', tap_macro, (1141, 663), 18),
+        ('Space', tap_macro, (1141, 663), 20),
         ('Research', find_research, None, 3),
-        ('Space', tap_macro, (1141, 663), 9),
-        ('Space', tap_macro, (1141, 663), 6),
-        ('Space', tap_macro, (1141, 663), 8),
-        ('Global', tap_macro, (660, 1), 8),
+        ('Global', tap_macro, (660, 1), 12),
 
         # Blue Pot - 1
         ('Chaos Top Stage', tap_macro, (847, 162), 18),
         ('Fight', fighting_logic, None, 3),
         ('Fight Skip', tap_macro, (873, 661), 4),
         ('Fight Skip Confirm', tap_macro, (922, 455), 3),
-        ('Global', tap_macro, (660, 1), 6),
+        ('Global', tap_macro, (660, 1), 10),
         # ('Map Middle', tap_macro, (1017, 370), 4),
         # ('Rest Free', tap_macro, (420, 536), 10),
         # ('Rest Confirm', tap_macro, (896, 486), 8),
@@ -771,6 +772,7 @@ def get_game_steps():
         ('Summoning Till Empty', summoning_till_empty, None, 5),
         ('Return', tap_macro, (51, 32), 3),
         ('Combatants', tap_macro, (1166, 384), 6),
+        ('Take Screenshot', take_screenshot, None, 1),
     ]
     return steps
 
