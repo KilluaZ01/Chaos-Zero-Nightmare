@@ -18,6 +18,7 @@ def get_game_steps():
     """
     steps = [
         ('Login Checker', login_checker, None, 3),
+        ('Validating', validate_template, ('login_checker.png', 0.8), 2),
         ('Login', tap_macro, (640, 560), 5),
         ('Guest Account', tap_macro, (840, 285), 6),
         ('Confirm', tap_macro, (895, 520), 15),
@@ -140,6 +141,7 @@ def get_game_steps():
         ('Follow Skill', swipe_macro, (720, 592, 993, 378, 1500), 3),
         ('Center Skill', swipe_macro, (640, 594, 993, 378, 1500), 3),
         ('Follow Skill', swipe_macro, (720, 592, 993, 378, 1500), 10),
+        ('Fight Ended Till Continue', fighting_till_continue, None, 2),
         ('Battle Continue', tap_macro, (1140, 667), 5),
         ('3x', swipe_macro, (1232, 233, 1232, 333, 4000), 8),
         ('3x', swipe_macro, (1232, 233, 1232, 333, 4000), 10),
@@ -225,6 +227,7 @@ def get_game_steps():
         ('Center Skill', swipe_macro, (640, 594, 1060, 418, 1500), 3),
         ('Follow Skill', swipe_macro, (720, 592, 1060, 418, 1500), 3),
         ('Center Skill', swipe_macro, (640, 594, 1060, 418, 1500), 6),
+        ('Fight Till Continue', fighting_till_continue, None, 2),
         ('Battle Continue', tap_macro, (1140, 667), 6),
         
         ('Next Map', tap_macro, (1015, 367), 6),
@@ -508,14 +511,15 @@ def get_game_steps():
         ('Global', tap_macro, (660, 1), 2),
         ('Auto Fight', tap_macro, (1124, 40), 88),
         ('Check Fight Ended', check_confirm, None, 3),
-        ('Battle Continue', tap_macro, (1140, 667), 5),
+        ('Validating', validate_template, ('confirm_button.png', 0.8), 2),
+        ('Battle Continue', tap_macro, (1140, 667), 12),
 
         # B2
         ('B2', tap_macro, (659, 357), 4),
         ('Space', tap_macro, (1141, 663), 6),
         ('Space', tap_macro, (1141, 663),120),
         ('Check Fight Ended', check_confirm, None, 3),
-        ('Battle Continue', tap_macro, (1140, 667), 4),
+        ('Battle Continue', tap_macro, (1140, 667), 10),
         ('Test Screenshot', take_screenshot, None, 1),
 
         # B3
@@ -533,6 +537,8 @@ def get_game_steps():
         ('Space', tap_macro, (1141, 663), 6),
         ('Global', tap_macro, (660, 1), 4),
         ('Global', tap_macro, (660, 1), 5),
+        ('Global', tap_macro, (660, 1), 5),
+        ('Global', tap_macro, (660, 1), 2),
         ('Another Char 1', find_char1, (51, 274), 3),
         ('Space', tap_macro, (1141, 663), 3),
         ('Auto Register', tap_macro, (1105, 604), 3),
@@ -653,7 +659,7 @@ def get_game_steps():
         ('Checking Confirm', check_confirm, None, 1),
         ('Retry Simulation', tap_macro, (858, 662), 115), 
         ('Checking Confirm', check_confirm, None, 1),
-        ('Space', tap_macro, (1141, 663), 10),
+        ('Space', tap_macro, (1141, 663), 20),
         ('Return', tap_macro, (51, 32), 4),
         ('Return', tap_macro, (51, 32), 2),
         ('Return', tap_macro, (51, 32), 2),
@@ -729,6 +735,7 @@ def get_game_steps():
         ('Global', tap_macro, (660, 1), 2),
         ('Claim Rewards Event', claim_rewards, None, 2),
         ('Scroll Event', swipe_macro, (120, 690, 120, 100, 1500), 2),
+        ('Validating', validate_template, ('event_icon.png', 0.8), 2),
         ('Claim Rewards Event', claim_rewards, None, 2),
         ('Test Screenshot', take_screenshot, None, 1),
 
@@ -772,7 +779,7 @@ def get_game_steps():
         ('Summoning Till Empty', summoning_till_empty, None, 5),
         ('Return', tap_macro, (51, 32), 3),
         ('Combatants', tap_macro, (1166, 384), 6),
-        ('Take Screenshot', take_screenshot, None, 1),
+        ('Take Screenshot', final_screenshot, None, 1),
     ]
     return steps
 
@@ -790,29 +797,56 @@ def execute_macro_steps(guest_data, steps, log_func, pause_event):
         log_func(log_text)
 
         if action_func == "input_name":
-            # Special case for name input
             for instance_name, guest_name in guest_data:
                 pause_event.wait()
                 input_macro(instance_name, guest_name)
                 log_func(f"[{instance_name}] Input guest name: {guest_name}")
-                
-        else:
-            # Normal actions with threading
-            threads = []
-            for instance_name, _ in guest_data:
-                pause_event.wait()
-                if coords is not None:
-                    t = threading.Thread(target=action_func, args=(instance_name, *coords))
-                else:
-                    t = threading.Thread(target=action_func, args=(instance_name,))
-                t.start()
-                threads.append(t)
+            continue
 
-            # Wait for all threads
-            for t in threads:
-                t.join()
+        # Normal or validation steps
+        threads = []
+        bad_instances = []
 
-        # Sleep with pause checking
+        for instance_name, guest_name in list(guest_data):  # iterate over COPY
+            pause_event.wait()
+
+            # Case 1: template validation step
+            if action_func == validate_template:
+                template_name, threshold = coords  # coords passed as tuple
+                ok = validate_template(instance_name, template_name, threshold)
+
+                if not ok:
+                    log_func(f"[{instance_name}] FAILED validation: removing instance...")
+                    close_instance(instance_name)
+                    time.sleep(2)
+                    delete_instance(instance_name)
+                    bad_instances.append((instance_name, guest_name))
+                continue  # no threading needed for validation
+
+            # Case 2: normal threaded step
+            if coords is not None:
+                t = threading.Thread(target=action_func, args=(instance_name, *coords))
+            else:
+                t = threading.Thread(target=action_func, args=(instance_name,))
+
+            t.start()
+            threads.append(t)
+
+        # Join threads
+        for t in threads:
+            t.join()
+
+        # Remove bad instances
+        for bad in bad_instances:
+            guest_data.remove(bad)
+            log_func(f"[Removed] {bad[0]} removed from guest_data")
+
+        # If no instances left → stop early
+        if not guest_data:
+            log_func("All instances failed. Stopping automation…")
+            break
+
+        # Sleep
         for _ in range(sleep_duration):
             pause_event.wait()
             time.sleep(1)

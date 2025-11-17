@@ -21,33 +21,53 @@ def find_research(instance_name, *args):
     template_path = f"{TEMPLATE_DIR}/research_card.png"
     template_path_horse = f"{TEMPLATE_DIR}/horse.png"
     template_path_judge = f"{TEMPLATE_DIR}/judge.png"
+    template_path_perse = f"{TEMPLATE_DIR}/perse.png"
 
     coords = find_coordinates(instance_name, template_path, threshold=0.8)
     if coords:
         x, y = coords
         tap_macro(instance_name, x, y)
         time.sleep(2)
-        tap_macro(instance_name, 1141, 663),
-        time.sleep(4),
-        tap_macro(instance_name, 1141, 663),
-        time.sleep(4),
-        tap_macro(instance_name, 1141, 663),     
-        time.sleep(4),
+        tap_macro(instance_name, 1141, 663)
+        time.sleep(4)
+        tap_macro(instance_name, 1141, 663)
+        time.sleep(4)
+        tap_macro(instance_name, 1141, 663)
+        time.sleep(4)
         return True   
     else:
         sub_coords = find_coordinates(instance_name, template_path_horse, threshold=0.8)
         if sub_coords:
             x, y = sub_coords
             tap_macro(instance_name, x, y)
+            time.sleep(2)
+            tap_macro(instance_name, 1141, 663)
+            time.sleep(4)
             return True
         else:
             sub_coords_2 = find_coordinates(instance_name, template_path_judge, threshold=0.7)
             if sub_coords_2:
                 x, y = sub_coords_2
                 tap_macro(instance_name, x, y)
+                time.sleep(2)
+                tap_macro(instance_name, 1141, 663)
+                time.sleep(4)
                 return True
             else:
-                tap_macro(instance_name, 322, 366)
+                sub_coords_3 = find_coordinates(instance_name, template_path_perse, threshold=0.6)
+                if sub_coords_3:
+                    x, y = sub_coords_3
+                    tap_macro(instance_name, x, y)
+                    time.sleep(2)
+                    tap_macro(instance_name, 1141, 663)
+                    time.sleep(4)
+                    return True
+                else:
+                    tap_macro(instance_name, 322, 366)
+                    time.sleep(2)
+                    tap_macro(instance_name, 1141, 663)
+                    time.sleep(4)
+                    return False
     
 def check_start(instance_name, *args):
     template_path = f"{TEMPLATE_DIR}/start_button.png"
@@ -243,3 +263,23 @@ def final_screenshot(instance_name, *args):
     DIR = SCREENSHOT_DIR_FINAL
     FILENAME = f"{instance_name}_DAY1.png"
     take_screenshot(instance_name, DIR, FILENAME)
+
+def validate_template(instance_name, template_path, threshold):
+    path = f"{TEMPLATE_DIR}/{template_path}"
+    valid = check_template(instance_name, path, threshold=threshold)
+    return valid
+
+def fighting_till_continue(instance_name, *args):
+    template_path = f"{TEMPLATE_DIR}/continue_button.png"
+
+    for i in range(6):
+        swipe_macro(640, 594, 914, 405, 1500)
+        time.sleep(3)
+        swipe_macro(720, 592, 914, 405, 1500)
+        time.sleep(3)
+        swipe_macro(640, 594, 914, 405, 1500)
+        time.sleep(3)
+        if check_template(instance_name, template_path, threshold=0.8):
+            break        
+        else:
+            pass
