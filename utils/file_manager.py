@@ -33,12 +33,6 @@ def get_persistent_path(filename, subdir=None):
     return file_path
 
 def push_assets(instance_name):
-    """Push specified assets to device using adb
-    
-    Args:
-        instance_name: Name of the instance
-    """
-
     push_cmd = (
         f'ldconsole.exe adb --name "{instance_name}" '
         f'--command "push {ASSETS_DIR} /sdcard/temp_extracted"'
@@ -52,15 +46,14 @@ def push_assets(instance_name):
     r1 = subprocess.run(push_cmd, shell=True)
     if r1.returncode != 0:
         print(f"[{instance_name}] ❌ Failed to push external data.")
-        return False, None
-    
+        return
+
     r2 = subprocess.run(move_cmd, shell=True)
     if r2.returncode != 0:
         print(f"[{instance_name}] ❌ Failed to move external data.")
-        return False, None
-    
+        return
+
     print(f"[{instance_name}] ✅ Successfully pushed external data.")
-    return True, None
 
 def save_account_metadata(account):
     """Save account metadata to batches.json

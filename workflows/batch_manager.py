@@ -2,6 +2,8 @@
 
 import os
 import time
+import threading
+
 from random import randint
 
 from macros.game_actions import clone_instance, launch_instance
@@ -121,9 +123,18 @@ def run_batch(batch_num, instances_per_batch, log_func, base_instance, pause_eve
         os.system(f'ldconsole.exe adb --name "{instance_name}" --command "shell pm clear {PACKAGE_NAME}"')
 
     # Push external assets
+    threads = []
+
     for instance_name, _ in guest_data:
-        push_assets(instance_name)
-        log_func(f"[{instance_name}] - Pushed external assets")
+        t = threading.Thread(target=push_assets, args=(instance_name,))
+        threads.append(t)
+        t.start()
+
+    # Wait for all threads to finish
+    for t in threads:
+        t.join()
+
+    log_func("All external assets pushed to all instances.")
 
     # Launch game
     for instance_name, _ in guest_data:
