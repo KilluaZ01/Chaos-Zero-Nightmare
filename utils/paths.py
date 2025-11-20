@@ -5,6 +5,7 @@
 # TEMPLATE_DIR = r"C:/Users/Killua/Desktop/Chaos/templates"
 # MAIN_PATH = "C:/Users/Killua/Desktop/Chaos/"
 # APK_DIR = r"C:/Users/Killua/Desktop/Chaos/ChaosAPK"
+# BACKUP_DIR = r"C:\Users\Killua\Desktop\Chaos\accounts"
 # ASSETS_DIR = r"C:\Users\Killua\Desktop\accounts\external"
 
 CONFIG_PATH = r"D:\LDPlayer\LDPlayer9\vms\config"
@@ -14,4 +15,5 @@ SCREENSHOT_DIR_FINAL = r"C:\Users\Administrator\Desktop\Chaos\screenshots"
 MAIN_PATH = "C:/Users/Administrator/Desktop/Chaos/"
 APK_DIR = r"C:/Users/Administrator/Desktop/Chaos/ChaosAPK"
 ASSETS_DIR = r"C:\Users\Administrator\Desktop\Chaos\accounts\external"
+BACKUP_DIR = r"C:\Users\Administrator\Desktop\Chaos\accounts"
 TEMPLATE_DIR = r"C:/Users/Administrator/Desktop/Chaos/templates"

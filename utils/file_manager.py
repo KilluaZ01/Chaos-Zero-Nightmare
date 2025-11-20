@@ -4,8 +4,9 @@ import os
 import json
 import subprocess
 from datetime import datetime
+import time
 
-from utils.paths import ASSETS_DIR, MAIN_PATH
+from utils.paths import ASSETS_DIR, BACKUP_DIR, MAIN_PATH, PACKAGE_NAME
 
 def get_persistent_path(filename, subdir=None):
     """Get persistent file path in AppData
@@ -107,7 +108,7 @@ def backup_account_data(instance_name, guest_name, log_func):
     make_tar_cmd = (
         f'ldconsole.exe adb --name "{instance_name}" '
         f'--command "shell su -c \'cd /data/data && '
-        f'tar -czf /sdcard/{backup_filename} com.com.smilegate.chaoszero.stove.google\'"'
+        f'tar -czf /sdcard/{backup_filename} com.smilegate.chaoszero.stove.google\'"'
     )
     
     pull_tar_cmd = (
@@ -134,3 +135,41 @@ def backup_account_data(instance_name, guest_name, log_func):
     log_func(f"[{instance_name}] 💾 Saved internal backup -> {backup_path}")
     
     return True, backup_filename
+
+def extract_account_data(account, log_func=print):
+    instance_name = account["instance_name"]
+    backup_file = account["backup_file"]
+    backup_path = os.path.join(BACKUP_DIR, backup_file)
+    base_instance = "Chaos_Base"
+
+    # Clone a new instance 
+    log_func(f"Cloned instance: {instance_name}")
+    os.system(f'ldconsole.exe copy --name "{instance_name}" --from "{base_instance}"') 
+    
+    # Launch instance 
+    log_func(f"🚀 Launching {instance_name}")
+    os.system(f'ldconsole.exe launch --name "{instance_name}"') 
+    time.sleep(70)
+
+    os.system(f'ldconsole.exe adb --name "{instance_name}" --command "shell pm clear {PACKAGE_NAME}"')
+    time.sleep(3)
+
+    push_assets(instance_name)
+    time.sleep(2)
+
+    log_func(f"📤 Pushing tar...")
+    subprocess.run(
+        f'ldconsole.exe adb --name "{instance_name}" '
+        f'--command "push {backup_path} /sdcard/"',
+        shell=True
+    )
+    time.sleep(3)
+
+    log_func("📦 Extracting backup...")
+    extract_cmd = (
+        f'ldconsole.exe adb --name "{instance_name}" '
+        f'--command \"shell su -c \'cd /data/data && tar -xzf /sdcard/{backup_file}\'\"'
+    )
+    subprocess.run(extract_cmd, shell=True)
+
+    log_func("✅ Account restored successfully!")

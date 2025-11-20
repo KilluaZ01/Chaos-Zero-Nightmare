@@ -6,6 +6,13 @@ from macros.basic_actions import swipe_macro, tap_macro
 from utils.screenshot_utils import check_template, find_coordinates, find_all_coordinates, match_in_roi, take_screenshot
 from utils.paths import SCREENSHOT_DIR_FINAL, TEMPLATE_DIR
 
+def check_if_glitch(instance_name, *args):
+    template_path = f"{TEMPLATE_DIR}/wait.png"
+
+    if check_template(instance_name, template_path, threshold=0.8):
+        tap_macro(instance_name, 530, 460)
+        time.sleep(2)
+
 def watch_again(instance_name, *args):
     template_path = f"{TEMPLATE_DIR}/watch_again_button.png"
 
@@ -273,13 +280,43 @@ def fighting_till_continue(instance_name, *args):
     template_path = f"{TEMPLATE_DIR}/continue_button.png"
 
     for i in range(6):
-        swipe_macro(640, 594, 914, 405, 1500)
+        swipe_macro(instance_name,640, 594, 914, 405, 1500)
         time.sleep(3)
-        swipe_macro(720, 592, 914, 405, 1500)
+        swipe_macro(instance_name, 720, 592, 914, 405, 1500)
         time.sleep(3)
-        swipe_macro(640, 594, 914, 405, 1500)
+        swipe_macro(instance_name, 640, 594, 914, 405, 1500)
+        time.sleep(3)
+        tap_macro(instance_name, 1142, 623)
+        time.sleep(8)
+        swipe_macro(instance_name, 720, 592, 914, 405, 1500)
+        time.sleep(3)
+        swipe_macro(instance_name, 640, 594, 914, 405, 1500)
         time.sleep(3)
         if check_template(instance_name, template_path, threshold=0.8):
             break        
         else:
             pass
+
+def global_till_slide(instance_name, *args):
+    template_path = f"{TEMPLATE_DIR}/slide.png"
+
+    for i in range(3):
+        tap_macro(instance_name, 660, 1)
+        time.sleep(2)
+        tap_macro(instance_name, 660, 1)
+        time.sleep(2)
+        if check_template(instance_name, template_path, threshold=0.8):
+            break        
+        else:
+            pass
+
+def if_continue(instance_name, *args):
+    template_path = f"{TEMPLATE_DIR}/orange_confirm_button.png"
+    
+    coords = find_coordinates(instance_name, template_path, threshold=0.8)
+
+    if coords:
+        tap_macro(instance_name, coords[0], coords[1])
+        time.sleep(2)
+    else:
+        pass

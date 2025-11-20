@@ -16,12 +16,13 @@ def get_game_steps():
     Returns:
         list: List of (description, function, coords, sleep_duration) tuples
     """
+
     steps = [
+        ('Check Glitch', check_if_glitch, None, 2),
         ('Login Checker', login_checker, None, 3),
-        ('Validating', validate_template, ('login_checker.png', 0.8), 2),
         ('Login', tap_macro, (640, 560), 5),
         ('Guest Account', tap_macro, (840, 285), 6),
-        ('Confirm', tap_macro, (895, 520), 15),
+        ('Confirm', tap_macro, (895, 520), 19),
         ('Confirm Guest', tap_macro, (630, 615), 16),
         ('Confirm Server', tap_macro, (625, 495), 8),
         ('Choose Voice', tap_macro, (625, 360), 3),
@@ -62,6 +63,7 @@ def get_game_steps():
         ('Global', tap_macro, (1, 1), 4),
         ('Global', tap_macro, (1, 1), 4),
         ('Global', tap_macro, (1, 1), 5),
+        ('Global till Slide', global_till_slide, None, 2),
         ('Second Step', swipe_macro, (901, 584, 886, 365, 1500), 5),
         ('Global', tap_macro, (1, 1), 5),
         ('R', swipe_macro, (787, 577, 900, 365, 1500), 8),
@@ -101,7 +103,7 @@ def get_game_steps():
         ('Prologue 2', tap_macro, (687, 361), 4),
         ('Battle Continue', tap_macro, (1140, 667), 6),
         ('Battle Continue', tap_macro, (1140, 667), 6),
-        ('3x', swipe_macro, (1232, 233, 1232, 333, 15000), 16),
+        ('3x', swipe_macro, (1232, 233, 1232, 333, 15000), 30),
         ('3x', swipe_macro, (1232, 233, 1232, 333, 3000), 5),
         ('Global', tap_macro, (660, 1), 3),
         ('3x', swipe_macro, (1232, 233, 1232, 333, 4000), 7),
@@ -110,8 +112,10 @@ def get_game_steps():
         ('Center Skill', swipe_macro, (640, 594, 814, 397, 1500), 3),
         ('Follow Skill left', swipe_macro, (547, 601, 814, 397, 1500), 4),
         ('Center Skill', swipe_macro, (640, 594, 814, 397, 1500), 3),
+        ('Skip Turn', tap_macro, (1142, 623), 2),
         ('Skip Turn', tap_macro, (1142, 623), 10),
         ('Global', tap_macro, (660, 1), 3),
+        ('Global', tap_macro, (680, 1), 3),
         ('Global', tap_macro, (660, 1), 3),
         ('Global', tap_macro, (660, 1), 3),
         ('Global', tap_macro, (660, 1), 3),
@@ -140,7 +144,7 @@ def get_game_steps():
         ('Center Skill', swipe_macro, (640, 594, 993, 378, 1500), 3),
         ('Follow Skill', swipe_macro, (720, 592, 993, 378, 1500), 3),
         ('Center Skill', swipe_macro, (640, 594, 993, 378, 1500), 3),
-        ('Follow Skill', swipe_macro, (720, 592, 993, 378, 1500), 10),
+        ('Follow Skill', swipe_macro, (720, 592, 993, 378, 1500), 3),
         ('Fight Ended Till Continue', fighting_till_continue, None, 2),
         ('Battle Continue', tap_macro, (1140, 667), 5),
         ('3x', swipe_macro, (1232, 233, 1232, 333, 4000), 8),
@@ -170,7 +174,7 @@ def get_game_steps():
         ('Global', tap_macro, (660, 1), 2),
         ('Global', tap_macro, (660, 1), 6),
         ('3x', swipe_macro, (1232, 233, 1232, 333, 4000), 6),
-        ('3x', swipe_macro, (1232, 233, 1232, 333, 4000), 34),
+        ('3x', swipe_macro, (1232, 233, 1232, 333, 40000), 42),
         ('Battle Continue', tap_macro, (1140, 667), 6),
 
         # EP - 1
@@ -655,6 +659,7 @@ def get_game_steps():
         ('Checking Confirm', check_confirm, None, 1),
         ('Retry Simulation', tap_macro, (858, 662), 115),
         ('Checking Confirm', check_confirm, None, 1),
+        ('Validating', validate_template, ('confirm_button.png', 0.8), 2),
         ('Retry Simulation', tap_macro, (858, 662), 115),  
         ('Checking Confirm', check_confirm, None, 1),
         ('Retry Simulation', tap_macro, (858, 662), 115), 
@@ -759,6 +764,7 @@ def get_game_steps():
         ('Summoning Rare', summoning_rare, None, 5),
         ('Space', tap_macro, (1141, 663), 3),
         ('Rescue 10x', tap_macro, (1141, 663), 3),
+        ('If Continue', if_continue, None, 2),
         ('Summoning Rare', summoning_rare, None, 5),
         ('Space', tap_macro, (1141, 663), 3),
         ('Rescue 10x', tap_macro, (1141, 663), 3),
@@ -781,6 +787,7 @@ def get_game_steps():
         ('Combatants', tap_macro, (1166, 384), 6),
         ('Take Screenshot', final_screenshot, None, 1),
     ]
+    
     return steps
 
 def execute_macro_steps(guest_data, steps, log_func, pause_event):
@@ -818,8 +825,9 @@ def execute_macro_steps(guest_data, steps, log_func, pause_event):
                 if not ok:
                     log_func(f"[{instance_name}] FAILED validation: removing instance...")
                     close_instance(instance_name)
-                    time.sleep(2)
+                    time.sleep(4)
                     delete_instance(instance_name)
+                    time.sleep(4)
                     bad_instances.append((instance_name, guest_name))
                 continue  # no threading needed for validation
 

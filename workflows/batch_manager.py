@@ -9,8 +9,8 @@ from random import randint
 from macros.game_actions import clone_instance, launch_instance
 
 from utils.instance_manager import install_apk_threaded, generate_guest_name
-from utils.paths import APK_DIR, PACKAGE_NAME
-from utils.file_manager import push_assets
+from utils.paths import PACKAGE_NAME
+from utils.file_manager import backup_account_data, push_assets
 
 from .game_progression import get_game_steps, execute_macro_steps
 from .account_setup import validate_accounts
