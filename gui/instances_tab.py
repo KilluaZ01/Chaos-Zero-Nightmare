@@ -6,7 +6,7 @@ from tkinter import messagebox
 import json
 import os
 
-from utils.file_manager import get_persistent_path
+from utils.file_manager import extract_account_data, get_persistent_path
 
 # from account_extract import extract_account
 
@@ -183,27 +183,28 @@ class InstancesTab:
             messagebox.showerror("Error", f"Failed to load data:\n{e}")
     
     def extract_account(self):
-        """Extract selected account"""
+        """Extract selected Chaos Zero Nightmare account"""
         selected = self.tree.selection()
         if not selected:
             messagebox.showwarning("No Selection", "Please select an account.")
             return
-        
+
         values = self.tree.item(selected[0], "values")
         instance_name = values[0]
-        
+
         try:
             with open(BATCHES_FILE, "r", encoding="utf-8") as f:
                 accounts = json.load(f)
-            
+
             account = next((a for a in accounts if a["instance_name"] == instance_name), None)
             if not account:
                 messagebox.showerror("Error", f"Account {instance_name} not found.")
                 return
-            
-            # extract_account(account)
-            messagebox.showinfo("Success", f"Extracted {instance_name}!")
-        
+
+            extract_account_data(account, log_func=print)
+
+            messagebox.showinfo("Success", f"Extracted {instance_name} successfully!")
+
         except Exception as e:
             messagebox.showerror("Error", f"Failed to extract:\n{e}")
     
