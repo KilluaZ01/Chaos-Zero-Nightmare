@@ -1,6 +1,7 @@
 """Game-specific actions"""
 
 import os
+
 from utils.screenshot_utils import find_coordinates
 from utils.paths import MAIN_PATH
 
