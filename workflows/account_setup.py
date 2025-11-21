@@ -20,7 +20,7 @@ def setup_guest_accounts(guest_data, log_func):
         guest_data: List of (instance_name, guest_name) tuples
         log_func: Logging function
     """
-    for instance_name, guest_name in guest_data:
+    for instance_name, guest_name, luck_code in guest_data:
         input_macro(instance_name, guest_name)
         log_func(f"[{instance_name}] Input guest name: {guest_name}")
 
@@ -29,7 +29,7 @@ def validate_accounts(guest_data, log_func):
     """Validate accounts and save successful ones
     
     Args:
-        guest_data: List of (instance_name, guest_name) tuples
+        guest_data: List of (instance_name, guest_name, luck_code) tuples
         log_func: Logging function
         
     Returns:
@@ -40,7 +40,7 @@ def validate_accounts(guest_data, log_func):
     valid_instances = []
     valid_guest_names = []
 
-    for instance_name, guest_name in guest_data:
+    for instance_name, guest_name, luck_code in guest_data:
         log_func(f"[{instance_name}] Taking screenshot for {guest_name}")
 
         if check_template(instance_name, template_path, final_dir, threshold=0.80):

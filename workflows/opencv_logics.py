@@ -29,53 +29,72 @@ def find_research(instance_name, *args):
     template_path_horse = f"{TEMPLATE_DIR}/horse.png"
     template_path_judge = f"{TEMPLATE_DIR}/judge.png"
     template_path_perse = f"{TEMPLATE_DIR}/perse.png"
+    template_path_glut = f"{TEMPLATE_DIR}/glut.png"
 
-    coords = find_coordinates(instance_name, template_path, threshold=0.8)
-    if coords:
-        x, y = coords
-        tap_macro(instance_name, x, y)
-        time.sleep(2)
-        tap_macro(instance_name, 1141, 663)
-        time.sleep(4)
-        tap_macro(instance_name, 1141, 663)
-        time.sleep(4)
-        tap_macro(instance_name, 1141, 663)
-        time.sleep(4)
-        return True   
-    else:
-        sub_coords = find_coordinates(instance_name, template_path_horse, threshold=0.8)
-        if sub_coords:
-            x, y = sub_coords
+    try:
+        coords = find_coordinates(instance_name, template_path, threshold=0.8)
+        if coords:
+            x, y = coords
             tap_macro(instance_name, x, y)
             time.sleep(2)
             tap_macro(instance_name, 1141, 663)
             time.sleep(4)
-            return True
+            tap_macro(instance_name, 1141, 663)
+            time.sleep(4)
+            tap_macro(instance_name, 1141, 663)
+            time.sleep(4)
+            return True   
         else:
-            sub_coords_2 = find_coordinates(instance_name, template_path_judge, threshold=0.7)
-            if sub_coords_2:
-                x, y = sub_coords_2
+            sub_coords = find_coordinates(instance_name, template_path_horse, threshold=0.8)
+            if sub_coords:
+                x, y = sub_coords
                 tap_macro(instance_name, x, y)
                 time.sleep(2)
                 tap_macro(instance_name, 1141, 663)
                 time.sleep(4)
                 return True
             else:
-                sub_coords_3 = find_coordinates(instance_name, template_path_perse, threshold=0.6)
-                if sub_coords_3:
-                    x, y = sub_coords_3
+                sub_coords_2 = find_coordinates(instance_name, template_path_judge, threshold=0.7)
+                if sub_coords_2:
+                    x, y = sub_coords_2
                     tap_macro(instance_name, x, y)
                     time.sleep(2)
                     tap_macro(instance_name, 1141, 663)
                     time.sleep(4)
                     return True
                 else:
-                    tap_macro(instance_name, 322, 366)
-                    time.sleep(2)
-                    tap_macro(instance_name, 1141, 663)
-                    time.sleep(4)
-                    return False
+                    sub_coords_3 = find_coordinates(instance_name, template_path_perse, threshold=0.6)
+                    if sub_coords_3:
+                        x, y = sub_coords_3
+                        tap_macro(instance_name, x, y)
+                        time.sleep(2)
+                        tap_macro(instance_name, 1141, 663)
+                        time.sleep(4)
+                        return True
+                    else:
+                        sub_coords_4 = find_coordinates(instance_name, template_path_glut, threshold=0.6)
+                        if sub_coords_4:
+                            x, y = sub_coords_4
+                            tap_macro(instance_name, x, y)
+                            time.sleep(2)
+                            tap_macro(instance_name, 1141, 663)
+                            time.sleep(4)
+                            return True
+                        else:
+                            tap_macro(instance_name, 322, 366)
+                            time.sleep(2)
+                            tap_macro(instance_name, 1141, 663)
+                            time.sleep(4)
+                            return False
     
+    except Exception as e:
+        print(f"Error in find_research: {e}")
+        tap_macro(instance_name, 322, 366)
+        time.sleep(2)
+        tap_macro(instance_name, 1141, 663)
+        time.sleep(4)
+        return False
+
 def check_start(instance_name, *args):
     template_path = f"{TEMPLATE_DIR}/start_button.png"
 
@@ -268,7 +287,7 @@ def login_checker(instance_name, *args):
 
 def final_screenshot(instance_name, *args):
     DIR = SCREENSHOT_DIR_FINAL
-    FILENAME = f"{instance_name}_DAY1.png"
+    FILENAME = f"Day1_{instance_name}.png"
     take_screenshot(instance_name, DIR, FILENAME)
 
 def validate_template(instance_name, template_path, threshold):
@@ -320,3 +339,20 @@ def if_continue(instance_name, *args):
         time.sleep(2)
     else:
         pass
+
+def confirm_checker(instance_name, *args):
+    template_path = f"{TEMPLATE_DIR}/confirm_checker.png"
+    
+    for i in range(5):
+        if check_template(instance_name, template_path, threshold=0.8):
+            return True
+        else:
+            time.sleep(5)
+
+def check_3x(instance_name, *args):
+    template_path = f"{TEMPLATE_DIR}/3x_checker.png"
+    for i in range(5):
+        if check_template(instance_name, template_path, threshold=0.8):
+            return True
+        else:
+            time.sleep(5)

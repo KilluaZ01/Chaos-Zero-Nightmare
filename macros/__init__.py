@@ -4,6 +4,7 @@ from .basic_actions import tap_macro, swipe_macro, input_macro
 from .game_actions import (
     close_game,
     open_game,
+    open_luck,
     launch_instance,
     clone_instance,
     close_instance,
@@ -17,6 +18,7 @@ __all__ = [
     'input_macro',
     'close_game',
     'open_game',
+    'open_luck',
     'launch_instance',
     'clone_instance',
     'close_instance',

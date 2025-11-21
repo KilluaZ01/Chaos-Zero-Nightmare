@@ -9,7 +9,7 @@ from random import randint
 from macros.game_actions import clone_instance, launch_instance
 
 from utils.instance_manager import install_apk_threaded, generate_guest_name
-from utils.paths import PACKAGE_NAME
+from utils.paths import LUCK_KEYS, PACKAGE_NAME
 from utils.file_manager import backup_account_data, push_assets
 
 from .game_progression import get_game_steps, execute_macro_steps
@@ -95,12 +95,14 @@ def run_batch(batch_num, instances_per_batch, log_func, base_instance, pause_eve
     else:
         time.sleep(100)
 
-
     # Generate guest data
     guest_data = []
     for i, instance_name in enumerate(instance_names):
         guest_name = generate_guest_name()
-        guest_data.append((instance_name, guest_name))
+
+        luck_key = LUCK_KEYS[i] if i < len(LUCK_KEYS) else None
+        
+        guest_data.append((instance_name, guest_name, luck_key))
         log_func(f"[{instance_name}] Guest: {guest_name}")
 
     # Install APKs
@@ -119,13 +121,13 @@ def run_batch(batch_num, instances_per_batch, log_func, base_instance, pause_eve
     # time.sleep(10)
 
     # Clear app data
-    for instance_name, _ in guest_data:
+    for instance_name, guest_name, luck_key in guest_data:
         os.system(f'ldconsole.exe adb --name "{instance_name}" --command "shell pm clear {PACKAGE_NAME}"')
 
     # Push external assets
     threads = []
 
-    for instance_name, _ in guest_data:
+    for instance_name, guest_name, luck_key in guest_data:
         t = threading.Thread(target=push_assets, args=(instance_name,))
         threads.append(t)
         t.start()
@@ -137,7 +139,7 @@ def run_batch(batch_num, instances_per_batch, log_func, base_instance, pause_eve
     log_func("All external assets pushed to all instances.")
 
     # Launch game
-    for instance_name, _ in guest_data:
+    for instance_name, guest_name, luck_key in guest_data:
         os.system(
             f'ldconsole.exe adb --name "{instance_name}" '
             f'--command "shell monkey -p {PACKAGE_NAME} '

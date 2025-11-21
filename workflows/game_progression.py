@@ -23,6 +23,7 @@ def get_game_steps():
         ('Login', tap_macro, (640, 560), 5),
         ('Guest Account', tap_macro, (840, 285), 6),
         ('Confirm', tap_macro, (895, 520), 19),
+        ('Confirm Checker', confirm_checker, None, 2),
         ('Confirm Guest', tap_macro, (630, 615), 16),
         ('Confirm Server', tap_macro, (625, 495), 8),
         ('Choose Voice', tap_macro, (625, 360), 3),
@@ -50,10 +51,12 @@ def get_game_steps():
         ('Global', tap_macro, (1, 1), 8),
         ('Global', tap_macro, (1, 1), 2),
         ('Skip Video', tap_macro, (1155, 45), 5),
-        ('Skip Confirm', tap_macro, (849, 459), 8),
-        ('3x', swipe_macro, (1232, 233, 1232, 333, 16000), 17),
-        ('3x', swipe_macro, (1232, 233, 1232, 333, 7000), 10),
-        ('3x', swipe_macro, (1232, 233, 1232, 333, 3500), 6),
+        ('Skip Confirm', tap_macro, (849, 459), 10),
+        ('3x', swipe_macro, (1232, 233, 1232, 333, 18000), 20),
+        ('3x checker', check_3x, None, 2),
+        ('3x', swipe_macro, (1232, 233, 1232, 333, 15000), 18),
+        ('3x', swipe_macro, (1232, 233, 1232, 333, 6000), 10),
+
         #Battle Started First
         ('Global', tap_macro, (1, 1), 4),
         ('Global', tap_macro, (1, 1), 4),
@@ -97,7 +100,6 @@ def get_game_steps():
         ('Confirm Name', tap_macro, (648, 478), 3),
         ('3x', swipe_macro, (1232, 233, 1232, 333, 16000), 18  ),
         ('Battle Continue', tap_macro, (1140, 667), 6),
-        ('Test Screenshot', take_screenshot, None, 1),
 
         # Prologue 2
         ('Prologue 2', tap_macro, (687, 361), 4),
@@ -257,7 +259,6 @@ def get_game_steps():
         ('Next Map', tap_macro, (1015, 367), 12),
         ('Global', tap_macro, (660, 1), 2),
         ('Global', tap_macro, (660, 1), 2),
-        ('Test Screenshot', take_screenshot, None, 1),
 
         ('Center Skill', swipe_macro, (640, 594, 801, 392, 1500), 3),
         ('Follow Skill', swipe_macro, (720, 592, 801, 392, 1500), 3),
@@ -277,7 +278,6 @@ def get_game_steps():
         ('Follow Skill', swipe_macro, (720, 592, 801, 392, 1500), 5),
         ('Center Skill', swipe_macro, (640, 594, 801, 392, 1500), 7),
         ('Battle Continue', tap_macro, (1140, 667), 6),
-        ('Test Screenshot', take_screenshot, None, 1),
 
         ('Next Map', tap_macro, (1015, 367), 12),
         ('Global', tap_macro, (660, 1), 3),
@@ -359,7 +359,7 @@ def get_game_steps():
         ('Global', tap_macro, (660, 1), 5),
         ('Global', tap_macro, (660, 1), 2),
         ('Global', tap_macro, (660, 1), 2),
-        ('Battle Continue', tap_macro, (1140, 667),3),
+        ('Battle Continue', tap_macro, (1140, 667), 8),
         ('Next Map', tap_macro, (1015, 367), 12),
         ('Global', tap_macro, (660, 1), 2),
         ('Global', tap_macro, (660, 1), 2),
@@ -458,7 +458,6 @@ def get_game_steps():
         ('Global', tap_macro, (660, 1), 6),
         ('Battle Continue', tap_macro, (1140, 667), 8),
         ('Battle Continue', tap_macro, (1140, 667), 10),
-        ('Test Screenshot', take_screenshot, None, 1),
         
         # Ep - 3
         ('Choose Stage', tap_macro, (630, 360), 4),
@@ -524,7 +523,6 @@ def get_game_steps():
         ('Space', tap_macro, (1141, 663),120),
         ('Check Fight Ended', check_confirm, None, 3),
         ('Battle Continue', tap_macro, (1140, 667), 10),
-        ('Test Screenshot', take_screenshot, None, 1),
 
         # B3
         ('B3', tap_macro, (660, 362), 4), 
@@ -561,7 +559,7 @@ def get_game_steps():
         ('Return', tap_macro, (51, 32), 6),
         ('Space', tap_macro, (1141, 663), 110),
         ('Check Fight Ended', check_confirm, None, 3),
-        ('Battle Continue', tap_macro, (1140, 667), 8),
+        ('Battle Continue', tap_macro, (1140, 667), 12),
 
         ('Proceed with Tut', tap_macro, (619, 454), 10),
         ('Global', tap_macro, (660, 1), 2),
@@ -637,7 +635,6 @@ def get_game_steps():
         ('Return', tap_macro, (51, 32), 2),
         ('Return', tap_macro, (51, 32), 2),
         ('Return', tap_macro, (51, 32), 6),
-        ('Test Screenshot', take_screenshot, None, 1),
 
         ('Proceed with Tut', tap_macro, (619, 454), 6),
         ('Global', tap_macro, (660, 1), 2),
@@ -742,9 +739,11 @@ def get_game_steps():
         ('Scroll Event', swipe_macro, (120, 690, 120, 100, 1500), 2),
         ('Validating', validate_template, ('event_icon.png', 0.8), 2),
         ('Claim Rewards Event', claim_rewards, None, 2),
-        ('Test Screenshot', take_screenshot, None, 1),
 
         ('Return', tap_macro, (51, 32), 10),
+
+        ('Open Luck', "luck_open", None, 20), # Luck Input Step
+        ('Menu', tap_macro, (1226, 39), 2),
         ('Menu', tap_macro, (1226, 39), 3),
         ('Rescue', tap_macro, (780, 405), 4),
         ('Global', tap_macro, (660, 1), 2),
@@ -764,10 +763,10 @@ def get_game_steps():
         ('Summoning Rare', summoning_rare, None, 5),
         ('Space', tap_macro, (1141, 663), 3),
         ('Rescue 10x', tap_macro, (1141, 663), 3),
-        ('If Continue', if_continue, None, 2),
         ('Summoning Rare', summoning_rare, None, 5),
         ('Space', tap_macro, (1141, 663), 3),
-        ('Rescue 10x', tap_macro, (1141, 663), 3),
+        ('Rescue 10x', tap_macro, (1141, 663), 4),
+        ('If Continue', if_continue, None, 2),
         ('Summoning Rare', summoning_rare, None, 5),
         ('Space', tap_macro, (1141, 663), 3),
         ('Summons Shop', tap_macro, (1039, 29), 3),
@@ -799,22 +798,49 @@ def execute_macro_steps(guest_data, steps, log_func, pause_event):
         log_func: Logging function
         pause_event: Threading event for pause control
     """
+
     for log_text, action_func, coords, sleep_duration in steps:
         pause_event.wait()
         log_func(log_text)
 
         if action_func == "input_name":
-            for instance_name, guest_name in guest_data:
+            for instance_name, guest_name, luck_key in guest_data:
                 pause_event.wait()
                 input_macro(instance_name, guest_name)
                 log_func(f"[{instance_name}] Input guest name: {guest_name}")
+            continue
+        
+        elif action_func == "luck_open":
+            threads = []
+
+            for instance_name, guest_name, luck_key in guest_data:
+
+                # Skip instances without a luck code
+                if not luck_key:
+                    log_func(f"[{instance_name}] ⏸ No luck code — skipping luck macro")
+                    continue
+
+                pause_event.wait()
+
+                # Threaded luck open
+                t = threading.Thread(target=open_luck, args=(instance_name, luck_key))
+                t.start()
+                threads.append(t)
+
+                log_func(f"[{instance_name}] Started luck thread using key: {luck_key}")
+
+            # Join ALL luck threads
+            for t in threads:
+                t.join()
+
+            log_func(f"➡ Finished threaded luck_open step: {log_text}")
             continue
 
         # Normal or validation steps
         threads = []
         bad_instances = []
 
-        for instance_name, guest_name in list(guest_data):  # iterate over COPY
+        for instance_name, guest_name, luck_key in list(guest_data):  # iterate over COPY
             pause_event.wait()
 
             # Case 1: template validation step
@@ -828,7 +854,7 @@ def execute_macro_steps(guest_data, steps, log_func, pause_event):
                     time.sleep(4)
                     delete_instance(instance_name)
                     time.sleep(4)
-                    bad_instances.append((instance_name, guest_name))
+                    bad_instances.append((instance_name, guest_name, luck_key))
                 continue  # no threading needed for validation
 
             # Case 2: normal threaded step

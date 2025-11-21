@@ -1,13 +1,16 @@
-from utils.paths import SCREENSHOT_DIR
+import time
 import os
 import subprocess
 import cv2
-from random import randint
 import numpy as np
+
+import random
+
+from utils.paths import SCREENSHOT_DIR
 
 def take_screenshot(instance_name, DIR=SCREENSHOT_DIR, filename=None):
     if filename is None:
-        filename = f"{instance_name}_{randint(1000, 9999)}.png"
+        filename = f"{instance_name}_{random.randint(1000, 9999)}.png"
 
     remote_path = "/sdcard/result.png"
     local_path = os.path.join(DIR, filename)
@@ -53,8 +56,17 @@ def check_template(instance_name, template_path, DIR=None, threshold=0.8):
 
     result = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, _ = cv2.minMaxLoc(result)
+    
+    time.sleep(random.uniform(0.05, 0.15))
 
-    os.remove(screenshot_path)
+    try:
+        if os.path.exists(screenshot_path):
+            os.remove(screenshot_path)
+    except PermissionError:
+        pass  # File is locked or already deleted by another thread
+    except Exception as e:
+        print(f"Warning: Could not delete {screenshot_path}: {e}")
+
     return max_val >= threshold
 
 def find_coordinates(instance_name, template_path, threshold=0.8):
@@ -73,7 +85,15 @@ def find_coordinates(instance_name, template_path, threshold=0.8):
     result = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, max_loc = cv2.minMaxLoc(result)
 
-    os.remove(screenshot_path)  # Clean up screenshot file
+    time.sleep(random.uniform(0.05, 0.15))
+
+    try:
+        if os.path.exists(screenshot_path):
+            os.remove(screenshot_path)
+    except PermissionError:
+        pass  # File is locked or already deleted by another thread
+    except Exception as e:
+        print(f"Warning: Could not delete {screenshot_path}: {e}")
 
     if max_val >= threshold:
         center_x = max_loc[0] + template.shape[1] // 2
@@ -95,8 +115,16 @@ def find_all_coordinates(instance_name, template_path, threshold=0.8):
         return []
 
     result = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+
+    time.sleep(random.uniform(0.05, 0.15))
     
-    os.remove(screenshot_path)  # Clean up screenshot file
+    try:
+        if os.path.exists(screenshot_path):
+            os.remove(screenshot_path)
+    except PermissionError:
+        pass  # File is locked or already deleted by another thread
+    except Exception as e:
+        print(f"Warning: Could not delete {screenshot_path}: {e}")
 
     # Find all positions above threshold
     y_coords, x_coords = np.where(result >= threshold)
